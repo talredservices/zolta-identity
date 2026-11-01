@@ -9,6 +9,14 @@ private repository owns that composition workflow and publishes its image to a
 private staging package. Keep this repository limited to the reusable
 composition Dockerfile and shared Identity source.
 
+## 2026-11-01 — Symfony MIME advisory in Identity Composer lock
+
+The Identity pre-push guard reported `symfony/mime` v7.4.18 with
+`CVE-2026-45070`. Keep the package on the patched v7.4.22 line, which remains
+compatible with the app's PHP 8.3 platform requirement. Verify with
+`composer audit --locked`; Symfony's advisory lists 7.4.22 as fixed:
+[CVE-2026-45070](https://symfony.com/blog/cve-2026-45070-email-header-injection-via-non-token-characters-in-mime-parameter-names).
+
 ## 2026-10-26 — Preserve the document scope during hosted-auth redirects
 
 Nuxt 4.6.0 stops its app scope before an external `navigateTo` changes the

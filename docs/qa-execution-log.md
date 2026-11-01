@@ -1,5 +1,20 @@
 # QA execution log
 
+## 2026-11-01T05:16:52Z — Production release attempt blocked by Composer audit
+
+- Target/root: `/home/redouane/projects/talredservices/identity`; actor: current Codex session.
+- Action/method: ran `nvm exec 24.19.0 ./scripts/ci pre-push`. Frozen install, lint/typecheck, Nuxt build, 118 backend tests (977 assertions), tracked-secret and DCO checks, Compose configuration, and the JavaScript production audit passed. The guard stopped at `composer audit --locked`.
+- Verification: Composer reported `symfony/mime` `v7.4.18` with advisory `CVE-2026-45070`; Symfony's advisory lists `7.4.22` as the fixed release. No source commit, image publication, or deployment was performed.
+- Production gate: the runbook requires fast and full qualification on a self-hosted runner labeled `qualification`. The current organization Runners page has no self-hosted runners registered. No push, private Console image, release candidate, or deployment was performed.
+- Limitation: both Identity hosts still serve the existing image without favicon links. Update the audited dependency and provide the qualification runner before continuing this release.
+
+## 2026-11-01T04:52:17Z — Add a favicon to both Identity Console hosts
+
+- Target/root: `/home/redouane/projects/talredservices/identity`; actor: current Codex session.
+- Action/method: the public sign-in host and Access-protected admin host both use this Nuxt app. Added the app-wide SVG icon link in `app/app.vue` and copied the existing Talred mark to Nuxt's static `public/favicon.svg` path. Both live document heads were inspected and had no icon links.
+- Verification: `pnpm run lint:js`, `git diff --check`, and `cmp` between the original mark and new favicon passed. No tests, typecheck, build, install, runtime/provider changes, or deployment were performed.
+- Limitation: the change is local and unpublished; both production hosts need the Identity Console release to receive it. The private `talred-identity` deployment repository was not changed.
+
 ## 2026-10-27T03:44:13Z — Full local release guard for hosted auth and demo cleanup
 
 - Target/root: public `identity`; actor: current Codex session; release branch `codex/full-local-staging-20261026`.
